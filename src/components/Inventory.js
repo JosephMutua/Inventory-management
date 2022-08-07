@@ -8,6 +8,7 @@ export default class Inventory extends Component {
       this.state = {
          Count : 0,
          Items : [],
+         quantity : 0
         
          
       }
@@ -16,8 +17,7 @@ export default class Inventory extends Component {
     {
         const itemObj =
         {
-            name : this.state.value,
-            quantity : 0
+            name : this.state.value
         }
         if (this.state.value !== ''){
 
@@ -38,11 +38,37 @@ export default class Inventory extends Component {
             value : e.target.value
         })
     }
+
     buy() {
         this.setState({
-            //quantity : itemObj.quantity + 1
+            quantity : this.state.quantity + 1
+        })
+
+    }
+
+    sell () {
+        if (this.state.quantity > 0)
+        {
+            this.setState({
+                quantity : this.state.quantity - 1
+            })
+        }
+    }
+    delete (itemid){
+        console.log (itemid)
+        this.setState({
+            Count : this.state.Count - 1,
+            Items : this.state.Items.filter((index) =>
+            {
+                return index !== itemid
+            }
+            )
+
+        
+
         })
     }
+    
     componentDidMount(){
         this.inputRef.current.focus()
 
@@ -51,10 +77,10 @@ export default class Inventory extends Component {
     
   render() {  
     const itemList = this.state.Items.map(
-        (item,index) => <li key = {index}>{item.name} {item.quantity}
+        (item,index) => <li key = {index}>{item.name} {this.state.quantity}
         <button onClick = {() => this.buy()}>Buy</button>
-        <button>Sell</button>
-        <button>Delete</button>
+        <button onClick ={()=> this.sell()}>Sell</button>
+        <button onClick={() => this.delete(index)}>Delete</button>
 
         </li>
     ) 
