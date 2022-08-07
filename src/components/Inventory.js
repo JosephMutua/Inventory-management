@@ -3,10 +3,12 @@ import React, { Component } from 'react'
 export default class Inventory extends Component {
     constructor(props) {
       super(props)
+      this.inputRef = React.createRef()
     
       this.state = {
          Count : 0,
-         Items : []
+         Items : [],
+        
          
       }
     }
@@ -36,12 +38,21 @@ export default class Inventory extends Component {
             value : e.target.value
         })
     }
+    buy() {
+        this.setState({
+            //quantity : itemObj.quantity + 1
+        })
+    }
+    componentDidMount(){
+        this.inputRef.current.focus()
+
+    }
 
     
   render() {  
     const itemList = this.state.Items.map(
         (item,index) => <li key = {index}>{item.name} {item.quantity}
-        <button>Buy</button>
+        <button onClick = {() => this.buy()}>Buy</button>
         <button>Sell</button>
         <button>Delete</button>
 
@@ -55,7 +66,8 @@ export default class Inventory extends Component {
         type= 'text'
         placeholder='Enter the Item name'
         value = {this.state.value}
-        onChange = {this.onChange}/>
+        onChange = {this.onChange}
+        ref = {this.inputRef}/>
         <button onClick={()=>this.addItem()}>Add</button>
         <ul>{itemList}</ul>
       </div>
